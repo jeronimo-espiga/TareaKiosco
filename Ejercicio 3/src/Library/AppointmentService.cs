@@ -1,51 +1,42 @@
 ﻿using System;
 using System.Text;
-
+/*el codigo original no cumple con el SRP
+debido a que todo el programa tenia la responsabilidad de crear los objetos pacientes,
+crear los objetos medicos y crear las consultas. Dividiendo el programa en 3 clases distintas
+y haciendo que cada una tenga la responsabilidad que le compete se logra cumplir el principio 
+de SRP.
+*/
 namespace Library
 {
+    private static int codigo_consulta;
+    public codigo_consulta()
+    {
+        codigo_consulta++;
+        this.Codigo_consulta=codigo_consulta;
+    }
     public class AppointmentService
     {
-        public static string CreateAppointment(string name, string id, string phoneNumber, DateTime date, string appoinmentPlace, string doctorName)
+        public static string CreateAppointment(Paciente paciente, Doctor doctor, string consultorio)
         {
             StringBuilder stringBuilder = new StringBuilder("Scheduling appointment...\n");
             Boolean isValid = true;
 
-            if (string.IsNullOrEmpty(name))
+            if (Paciente.Validar_Paciente(paciente))
             {
-                stringBuilder.Append("Unable to schedule appointment, Name is required\n");
-                isValid = false;
+                return false;
             }
-
-            if (string.IsNullOrEmpty(id))
+            if (Doctor.Validar_Doctor(doctor))
             {
-                stringBuilder.Append("Unable to schedule appointment, id is required\n");
-                isValid = false;
+                return false;
             }
-
-            if (string.IsNullOrEmpty(phoneNumber))
+            if (!string.IsNullOrEmpty(consultorio))
             {
-                stringBuilder.Append("Unable to schedule appointment, Phone number is required\n");
-                isValid = false;
+                this.Consultorio=consultorio;
             }
-
-            if (string.IsNullOrEmpty(appoinmentPlace))
-            {
-                stringBuilder.Append("Unable to schedule appointment, Appoinment place is required\n");
-                isValid = false;
-            }
-
-            
-            if (string.IsNullOrEmpty(doctorName))
-            {
-                stringBuilder.Append("Unable to schedule appointment, Doctor name is required\n");
-                isValid = false;
-            }
-
             if (isValid)
             {
                 stringBuilder.Append("Appoinment Scheduled");
             }
-
             return stringBuilder.ToString();
         }
 
